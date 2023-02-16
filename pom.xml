@@ -1,0 +1,210 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.fathzer</groupId>
+	<artifactId>parent-pom</artifactId>
+	<version>1.0.5</version>
+	<packaging>pom</packaging>
+
+	<name>parent</name>
+	<description>The parent pom used by projects from fathzer.com.</description>
+	<url>http://www.fathzer.com</url>
+
+	<scm>
+		<url>https://github.com/fathzer/parent-pom.git</url>
+		<connection>https://github.com/fathzer/parent-pom.git</connection>
+	</scm>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<id>Fathzer</id>
+			<name>Jean-Marc Astesana</name>
+			<email>admin@fathzer.com</email>
+		</developer>
+	</developers>
+
+	<properties>
+		<sonar.organization>fathzer</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+	</properties>
+
+	<profiles>
+		<profile>
+			<!-- This profile allows developper to specify which java installation to use using toolchains (see https://maven.apache.org/plugins/maven-toolchains-plugin/index.html)
+				It is useful when target java version is no more supported by default java installation.
+			-->
+			<id>tc</id>
+			<activation>
+				<property>
+					<name>jdk</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-toolchains-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>toolchain</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<toolchains>
+								<jdk>
+									<version>${jdk}</version>
+									<vendor>sun</vendor>
+								</jdk>
+							</toolchains>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
+	<distributionManagement>
+		<repository>
+			<id>ReleaseFathzer</id>
+			<name>Release fathzer.com</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
+		<snapshotRepository>
+			<id>SnapshotFathzer</id>
+			<name>Snapshot fathzer.com</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<uniqueVersion>false</uniqueVersion>
+		</snapshotRepository>
+
+	</distributionManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.10.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>animal-sniffer-maven-plugin</artifactId>
+					<version>1.22</version>
+					<configuration>
+						<signature>
+							<groupId>org.codehaus.mojo.signature</groupId>
+							<artifactId>${animal-sniffer-signature}</artifactId>
+							<version>1.0</version>
+						</signature>
+					</configuration>
+					<executions>
+						<execution>
+							<phase>test</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-enforcer-plugin</artifactId>
+					<version>3.2.1</version>
+					<executions>
+						<execution>
+							<id>enforce-bytecode-version</id>
+							<goals>
+								<goal>enforce</goal>
+							</goals>
+							<configuration>
+								<rules>
+									<enforceBytecodeVersion>
+										<maxJdkVersion>${check-dependencies-java-version}</maxJdkVersion>
+										<ignoredScopes>
+											<ignoreScope>test</ignoreScope>
+										</ignoredScopes>
+									</enforceBytecodeVersion>
+								</rules>
+								<fail>true</fail>
+							</configuration>
+						</execution>
+					</executions>
+					<dependencies>
+						<dependency>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>extra-enforcer-rules</artifactId>
+							<version>1.6.1</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.kohsuke</groupId>
+				<artifactId>pgp-maven-plugin</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!-- For obvious security reasons, keyFile and pass phrase are not provided, 
+						they should be in file present in the user's home directory -->
+					<secretkey>keyfile:${user.home}/fathzer_private_key.asc</secretkey>
+					<passphrase>file:${user.home}/fathzer_key_pwd.txt</passphrase>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.5.0</version>
+				<configuration>
+					<source>8</source>
+					<docencoding>UTF-8</docencoding>
+					<overview>${basedir}/overview.html</overview>
+					<header>${project.version}</header>
+					<footer>${project.version}</footer>
+				</configuration>
+				<executions>
+					<execution>
+						<id>javadoc_generation</id>
+						<phase>package</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
