@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fathzer</groupId>
 	<artifactId>parent-pom</artifactId>
-	<version>1.0.6</version>
+	<version>1.0.7</version>
 	<packaging>pom</packaging>
 
 	<name>parent</name>
@@ -38,8 +40,11 @@
 
 	<profiles>
 		<profile>
-			<!-- This profile allows developper to specify which java installation to use using toolchains (see https://maven.apache.org/plugins/maven-toolchains-plugin/index.html)
-				It is useful when target java version is no more supported by default java installation.
+			<!-- This profile allows developper to specify which java
+			installation to use using toolchains (see
+			https://maven.apache.org/plugins/maven-toolchains-plugin/index.html)
+			It is useful when target java version is no more supported by
+			default java installation.
 			-->
 			<id>tc</id>
 			<activation>
@@ -98,6 +103,12 @@
 					<version>3.11.0</version>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+					<version>2.22.2</version>
+				</plugin>
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>animal-sniffer-maven-plugin</artifactId>
 					<version>1.23</version>
@@ -130,7 +141,8 @@
 							<configuration>
 								<rules>
 									<enforceBytecodeVersion>
-										<maxJdkVersion>${check-dependencies-java-version}</maxJdkVersion>
+										<maxJdkVersion>
+											${check-dependencies-java-version}</maxJdkVersion>
 										<ignoredScopes>
 											<ignoreScope>test</ignoreScope>
 										</ignoredScopes>
@@ -163,8 +175,10 @@
 					</execution>
 				</executions>
 				<configuration>
-					<!-- For obvious security reasons, keyFile and pass phrase are not provided, 
-						they should be in file present in the user's home directory -->
+					<!-- For obvious security reasons, keyFile and pass phrase
+					are not provided, 
+						they should be in file present in
+					the user's home directory -->
 					<secretkey>keyfile:${user.home}/fathzer_private_key.asc</secretkey>
 					<passphrase>file:${user.home}/fathzer_key_pwd.txt</passphrase>
 				</configuration>
