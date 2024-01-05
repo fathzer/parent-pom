@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fathzer</groupId>
 	<artifactId>parent-pom</artifactId>
-	<version>1.0.8</version>
+	<version>1.0.9</version>
 	<packaging>pom</packaging>
 
 	<name>parent</name>
@@ -36,7 +36,9 @@
 	<properties>
 		<sonar.organization>fathzer</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
-	</properties>
+        <sign.keyFile>${user.home}/fathzer_private_key.asc</sign.keyFile>
+        <sign.keyPass>$keyPwd</sign.keyPass>
+    </properties>
 
 	<profiles>
 		<profile>
@@ -177,9 +179,16 @@
 		</pluginManagement>
 		<plugins>
 			<plugin>
-				<groupId>org.kohsuke</groupId>
-				<artifactId>pgp-maven-plugin</artifactId>
-				<version>1.1</version>
+				<!-- This plugin allows to sign deployed artifacts.
+					NB: I was not able to make any of the methods described in user manual working
+					In order to work, the private key should be in a file named 'fathzer_private_key.asc'
+					in the user's directory.
+					You should pass the key's password in 'keyPass' system property, for instance with
+					mvn -DkeyPwd=xxx ...
+				-->
+				<groupId>org.simplify4u.plugins</groupId>
+				<artifactId>sign-maven-plugin</artifactId>
+				<version>1.0.1</version>
 				<executions>
 					<execution>
 						<goals>
@@ -187,14 +196,6 @@
 						</goals>
 					</execution>
 				</executions>
-				<configuration>
-					<!-- For obvious security reasons, keyFile and pass phrase
-					are not provided, 
-						they should be in file present in
-					the user's home directory -->
-					<secretkey>keyfile:${user.home}/fathzer_private_key.asc</secretkey>
-					<passphrase>file:${user.home}/fathzer_key_pwd.txt</passphrase>
-				</configuration>
 			</plugin>
 
 			<plugin>
