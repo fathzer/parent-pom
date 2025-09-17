@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fathzer</groupId>
 	<artifactId>parent-pom</artifactId>
-	<version>1.0.9</version>
+	<version>1.1.0</version>
 	<packaging>pom</packaging>
 
 	<name>parent</name>
@@ -81,23 +81,20 @@
 		</profile>
 	</profiles>
 
-	<distributionManagement>
-		<repository>
-			<id>ReleaseFathzer</id>
-			<name>Release fathzer.com</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
-		</repository>
-		<snapshotRepository>
-			<id>SnapshotFathzer</id>
-			<name>Snapshot fathzer.com</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<uniqueVersion>false</uniqueVersion>
-		</snapshotRepository>
-	</distributionManagement>
-	
 	<repositories>
 		<repository>
-			<id>oss.sonatype.org-snapshot</id>
+			<id>central-snapshots</id>
+			<url>https://central.sonatype.com/repository/maven-snapshots/</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>sonatype-snapshot</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 			<releases>
 				<enabled>false</enabled>
@@ -121,7 +118,7 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
-					<version>3.5.3</version>
+					<version>3.5.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -146,7 +143,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.5.0</version>
+					<version>3.6.1</version>
 					<executions>
 						<execution>
 							<id>enforce-bytecode-version</id>
@@ -195,9 +192,8 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.11.2</version>
+				<version>3.11.3</version>
 				<configuration>
-					<source>8</source>
 					<docencoding>UTF-8</docencoding>
 					<overview>${basedir}/overview.html</overview>
 					<header>${project.version}</header>
@@ -217,7 +213,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>3.2.7</version>
+				<version>3.2.8</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -229,6 +225,16 @@
 				</executions>
 				<configuration>
 					<skip>${gpg.skip}</skip>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.8.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>ReleaseFathzer</publishingServerId>
 				</configuration>
 			</plugin>
 		</plugins>
