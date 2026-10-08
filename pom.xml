@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xml>
 <project xmlns="https://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.fathzer</groupId>
 	<artifactId>parent-pom</artifactId>
-	<version>1.1.0</version>
+	<version>1.1.1</version>
 	<packaging>pom</packaging>
 
 	<name>parent</name>
@@ -59,7 +58,7 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-toolchains-plugin</artifactId>
-						<version>3.2.0</version>
+						<version>3.3.0</version>
 						<executions>
 							<execution>
 								<goals>
@@ -112,13 +111,13 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.14.0</version>
+					<version>3.16.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
 					<!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
-					<version>3.5.4</version>
+					<version>3.6.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -143,7 +142,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>3.6.1</version>
+					<version>3.6.3</version>
 					<executions>
 						<execution>
 							<id>enforce-bytecode-version</id>
@@ -168,7 +167,7 @@
 						<dependency>
 							<groupId>org.codehaus.mojo</groupId>
 							<artifactId>extra-enforcer-rules</artifactId>
-							<version>1.10.0</version>
+							<version>1.12.1</version>
 						</dependency>
 					</dependencies>
 				</plugin>
@@ -178,7 +177,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
+				<version>3.4.0</version>
 				<executions>
 					<execution>
 						<id>attach-sources</id>
@@ -192,7 +191,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.11.3</version>
+				<version>3.12.0</version>
 				<configuration>
 					<docencoding>UTF-8</docencoding>
 					<overview>${basedir}/overview.html</overview>
@@ -231,7 +230,7 @@
 			<plugin>
 				<groupId>org.sonatype.central</groupId>
 				<artifactId>central-publishing-maven-plugin</artifactId>
-				<version>0.8.0</version>
+				<version>0.11.0</version>
 				<extensions>true</extensions>
 				<configuration>
 					<publishingServerId>ReleaseFathzer</publishingServerId>
